@@ -82,13 +82,14 @@ def create_random_test_command(dbservice: DBService):
     def to_ascii(i):
         return chr(i + 97) + ")"
 
-    def write_closed_question(question, file):
-        f = open(file, 'a')
-        f.write(question['content'] + "\n")
-        answers = fetch_answers(question)
-        for i, answer in enumerate(answers):
-            letter = to_ascii(i)
-            f.write(letter + " " + answer + "\n")
+    def write_closed_question(number, question, file):
+        with open(file, 'a') as f:
+            f.write(str(number) + ". "+ question['content'] + "\n")
+            answers = fetch_answers(question)
+            for i, answer in enumerate(answers):
+                letter = to_ascii(i)
+                f.write(letter + " " + answer + "\n")
+
 
     open_questions = dbservice.get_open_questions()
     closed_questions = dbservice.get_closed_questions()
@@ -100,5 +101,5 @@ def create_random_test_command(dbservice: DBService):
     for i in range(0, num_closed_questions):
         num = random.randint(0, len(closed_questions) - 1)
         question = closed_questions[num]
-        write_closed_question(question, output_file)
+        write_closed_question(i+1, question, output_file)
         del closed_questions[num]
