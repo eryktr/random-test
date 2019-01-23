@@ -18,6 +18,7 @@ class UserInterface:
             '0': lambda : commands.illegal_choice_command(),
             '1': lambda : commands.add_question_command(self.db_service),
             '2' : lambda : commands.delete_command(self.db_service),
+            '3': lambda : commands.create_random_test_command(self.db_service),
             '9': lambda: commands.exit_command()
         }
 
@@ -26,6 +27,7 @@ class UserInterface:
             print("[1] Add question")
             print("[2] Exit")
             print("[2] Delete question")
+            print("[3] Generate random test")
             choice = input("Choice: ")
             self.commands.get(choice, self.commands['0'])()
 
