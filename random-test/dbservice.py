@@ -15,13 +15,13 @@ class DBService:
         if 'type' not in question: raise WrongFormatError
         self.collection.insert_one(question)
 
-    def getOpenQuestions(self):
+    def get_open_questions(self):
         return list(self.collection.find({constants['TYPE_KEY']: constants['OPEN_QUESTION_KEY']}))
 
-    def getClosedQuestions(self):
+    def get_closed_questions(self):
         return list(self.collection.find({constants['TYPE_KEY']: constants['CLOSED_QUESTION_KEY']}))
 
-    def deleteQuestion(self, content):
+    def delete_question(self, content):
         self.collection.delete_many({constants['CONTENT_KEY']: content})
 
 

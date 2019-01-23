@@ -1,11 +1,11 @@
-import abc
 from consts import constants
 from dbservice import DBService
+from exceptions import NotEnoughClosedQuestionsError, NotEnoughOpenQuestionsError
 
 
 def delete_command(dbservice: DBService):
     content = input("Content of the question to be deleted: ")
-    dbservice.deleteQuestion(content)
+    dbservice.delete_question(content)
 
 
 def add_open_question_command(dbservice: DBService):
@@ -54,3 +54,12 @@ def add_question_command(dbservice : DBService):
 
     else:
         illegal_choice_command()
+
+
+def create_random_test_command(dbservice : DBService):
+    open_questions = dbservice.get_open_questions()
+    closed_questions = dbservice.get_closed_questions()
+    num_open_questions = int(input("Number of open questions: "))
+    num_closed_questions = int(input("Number of closed questions: "))
+    if num_open_questions > len(open_questions) : raise NotEnoughOpenQuestionsError
+    if num_closed_questions > len(closed_questions) : raise NotEnoughClosedQuestionsError
