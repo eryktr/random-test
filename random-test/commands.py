@@ -28,7 +28,7 @@ class AddOpenQuestionCommand(Command):
 
 class AddClosedQuestionCommand(Command):
 
-    def _init__(selfself, interface : UserInterface):
+    def _init__(self, interface : UserInterface):
         super(Command).__init__(interface)
 
     def execute(self):
@@ -45,3 +45,31 @@ class AddClosedQuestionCommand(Command):
         }
         self.interface.db_service.insert(question)
 
+
+class IllegalChoiceCommand(Command):
+    def __init__(self, interface):
+        super(Command).__init__(interface)
+
+    def execute(self):
+        print("Illegal choice.")
+
+
+class AddQuestionCommand(Command):
+    def __init__(self, interface : UserInterface):
+        super(Command).__init__(interface)
+
+    def execute(self):
+        print("What kind of question would you like to add?")
+        print("[1] - Open Question")
+        print("[2] - Closed Question")
+        choice = input("Choice: ")
+        if choice == 1:
+            command = AddOpenQuestionCommand(self.interface)
+
+        elif choice == 2:
+            command = AddClosedQuestionCommand(self.interface)
+
+        else:
+            command = IllegalChoiceCommand(self.interface)
+
+        command.execute()
