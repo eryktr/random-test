@@ -21,6 +21,9 @@ class DBService:
     def getClosedQuestions(self):
         return list(self.collection.find({constants['TYPE_KEY']: constants['CLOSED_QUESTION_KEY']}))
 
+    def deleteQuestion(self, content):
+        self.collection.delete_many({constants['CONTENT_KEY']: content})
+
 
 
 

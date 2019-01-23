@@ -74,6 +74,16 @@ class AddQuestionCommand(Command):
 
         command.execute()
 
+
+class DeleteQuestionCommand(Command):
+
+    def __init(self, dbservice : DBService):
+        Command.__init__(self, dbservice)
+
+    def execute(self):
+        content = input("Content of the question to be deleted: ")
+        self.db_service.deleteQuestion(content)
+
 class ExitCommand(Command):
 
     def __init__(self, dbservice : DBService):
