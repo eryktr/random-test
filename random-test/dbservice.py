@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from exceptions import WrongFormatError
+from consts import  constants
 
 
 class DBService:
@@ -15,13 +16,11 @@ class DBService:
         self.collection.insert_one(question)
 
     def getOpenQuestions(self):
-        return self.collection.find({'type':'open'})
+        return list(self.collection.find({constants['TYPE_KEY']: constants['OPEN_QUESTION_KEY']}))
 
     def getClosedQuestions(self):
-        return self.collection.find({'type':'open'})
+        return list(self.collection.find({constants['TYPE_KEY']: constants['CLOSED_QUESTION_KEY']}))
 
-
-# db = DBService("127.0.0.1", 27017, "questions", "questions", "testuser", "12345")
 
 
 
