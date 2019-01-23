@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from exceptions import WrongFormatError
 
+
 class DBService:
     def __init__(self, ip, port, dbname, collection, user, password):
         client = MongoClient(ip, port)
