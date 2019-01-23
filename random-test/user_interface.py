@@ -1,6 +1,7 @@
 from dbservice import DBService
 from exceptions import NotEnoughClosedQuestionsError, NotEnoughOpenQuestionsError, WrongFormatError
 import commands
+from pymongo.errors import ConnectionFailure, OperationFailure
 
 class UserInterface:
 
@@ -14,7 +15,15 @@ class UserInterface:
         password = input("Password: ")
 
         self.again = True
-        self.db_service = DBService(ip, port, dbname, collection, user, password)
+        try:
+            self.db_service = DBService(ip, port, dbname, collection, user, password)
+        except ConnectionFailure:
+            print("Connection error.")
+            exit(1)
+        except OperationFailure:
+            print("Operation failed.")
+            exit(1)
+
         self.commands = {
             '0': lambda : commands.illegal_choice_command(),
             '1': lambda : commands.add_question_command(self.db_service),
