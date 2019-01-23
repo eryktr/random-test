@@ -1,6 +1,11 @@
 # random-test
 This tool can be used to generate a random test based on questions from a database. To implement ths functionality, MongoDB was used.
 
+# Installing dependencies
+Before you are able to run this project, you need to install `pip` dependencies for it.
+
+    pip install -r requirements.txt
+
 # Requirements
 This app builds upon a MongoDB database. If you want to use it for your purposes, you need to have Mongo installed. Once you have your server set up, you need to pass the connection information like database name and the collection name on app startup.
 
