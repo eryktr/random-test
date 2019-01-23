@@ -15,17 +15,19 @@ class UserInterface:
         self.again = True
         self.db_service = DBService(ip, port, dbname, collection, user, password)
         self.commands = {
-            '0': commands.IllegalChoiceCommand(self.db_service),
-            '1': commands.AddQuestionCommand(self.db_service),
-            '2' : commands.ExitCommand(self.db_service)
+            '0': lambda : commands.illegal_choice_command(),
+            '1': lambda : commands.add_question_command(self.db_service),
+            '2' : lambda : commands.delete_command(self.db_service),
+            '9': lambda: commands.exit_command()
         }
 
     def run(self):
         while True:
             print("[1] Add question")
             print("[2] Exit")
+            print("[2] Delete question")
             choice = input("Choice: ")
-            self.commands.get(choice, 0).execute()
+            self.commands.get(choice, self.commands['0'])()
 
 ui = UserInterface()
 ui.run()
