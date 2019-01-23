@@ -59,6 +59,12 @@ def add_question_command(dbservice: DBService):
 
 def create_random_test_command(dbservice: DBService):
 
+    open_questions = dbservice.get_open_questions()
+    closed_questions = dbservice.get_closed_questions()
+    num_open_questions = int(input("Number of open questions: "))
+    num_closed_questions = int(input("Number of closed questions: "))
+    output_file = input("name of the output file: ")
+
     def shuffle_answers(answers):
         ans = answers
 
@@ -82,24 +88,36 @@ def create_random_test_command(dbservice: DBService):
     def to_ascii(i):
         return chr(i + 97) + ")"
 
-    def write_closed_question(number, question, file):
-        with open(file, 'a') as f:
+    def write_closed_question(number, question):
+        with open(output_file, 'a') as f:
             f.write(str(number) + ". "+ question['content'] + "\n")
             answers = fetch_answers(question)
             for i, answer in enumerate(answers):
                 letter = to_ascii(i)
                 f.write(letter + " " + answer + "\n")
 
+    def write_open_question(number, question):
+        with open(output_file, 'a') as f:
+            f.write(str(number) + ". " + question['content'] + "\n")
 
-    open_questions = dbservice.get_open_questions()
-    closed_questions = dbservice.get_closed_questions()
-    num_open_questions = int(input("Number of open questions: "))
-    num_closed_questions = int(input("Number of closed questions: "))
-    output_file = input("name of the output file: ")
+    def pop_random_question(list_of_questions):
+        num = random.randint(0, len(list_of_questions) - 1)
+        question = list_of_questions[num]
+        del list_of_questions[num]
+        return question
+
+    def write_closed_questions():
+        for i in range(0, num_closed_questions):
+            question = pop_random_question(closed_questions)
+            write_closed_question(i+1, question)
+
+    def write_open_questions():
+        for i in range(0, num_open_questions):
+            question = pop_random_question(open_questions)
+            write_open_question(num_closed_questions + i + 1, question)
+
     if num_open_questions > len(open_questions): raise NotEnoughOpenQuestionsError
     if num_closed_questions > len(closed_questions): raise NotEnoughClosedQuestionsError
-    for i in range(0, num_closed_questions):
-        num = random.randint(0, len(closed_questions) - 1)
-        question = closed_questions[num]
-        write_closed_question(i+1, question, output_file)
-        del closed_questions[num]
+    write_closed_questions()
+    write_open_questions()
+
