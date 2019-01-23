@@ -1,4 +1,5 @@
 from dbservice import DBService
+from exceptions import NotEnoughClosedQuestionsError, NotEnoughOpenQuestionsError, WrongFormatError
 import commands
 
 class UserInterface:
@@ -29,7 +30,14 @@ class UserInterface:
             print("[2] Delete question")
             print("[3] Generate random test")
             choice = input("Choice: ")
-            self.commands.get(choice, self.commands['0'])()
+            try:
+                self.commands.get(choice, self.commands['0'])()
+            except NotEnoughOpenQuestionsError:
+                print("Not enough open questions.")
+            except NotEnoughClosedQuestionsError:
+                print("Not enough closed questions.")
+            except ValueError:
+                print("Incorrect data.")
 
 ui = UserInterface()
 ui.run()
